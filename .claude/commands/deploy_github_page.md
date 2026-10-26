@@ -31,8 +31,10 @@ Walk through each step in order. When a step says **stop**, tell me exactly what
 GitHub serves this site under `/REPO/`, not `/`, so Vite needs that base path or every asset 404s. Pass it on the command line; don't edit `vite.config.ts`, because the Vercel deploy needs base `/`:
 
 ```bash
-npm run build -- --base=/REPO/
+MSYS_NO_PATHCONV=1 npm run build -- --base=/REPO/
 ```
+
+`MSYS_NO_PATHCONV=1` matters on Windows: without it, Git Bash rewrites `/REPO/` into `/Program Files/Git/REPO/` and every asset 404s. Afterwards, confirm `build/index.html` references `/REPO/assets/...`. Set it for the `gh api` calls below too.
 
 If the build fails, stop and show me the error. Don't deploy. (The output goes to `./build`, not `./dist`.)
 
